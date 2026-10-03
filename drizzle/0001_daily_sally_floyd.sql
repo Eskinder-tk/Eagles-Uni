@@ -1,0 +1,1 @@
+ALTER TABLE "admissions" ADD CONSTRAINT "admissions_email_unique" UNIQUE("email");

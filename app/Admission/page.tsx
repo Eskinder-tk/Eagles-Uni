@@ -7,6 +7,8 @@ import * as z from "zod";
 import { Upload, X, Loader2 } from "lucide-react";
 import Image from "next/image";
 
+import AdmissionSuccess from "./AdmissionSuccess/page";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -33,6 +35,8 @@ type FormValues = z.infer<typeof formSchema>;
 export default function ProfileForm() {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [admissionId, setAdmissionId] = useState<string | null>(null);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const {
     register,
@@ -52,10 +56,16 @@ export default function ProfileForm() {
       const imageUrl = await uploadToVercelBlob(formData);
 
       const admissionData = { ...data, imageUrl };
-      const admissionId = await createAdmission(admissionData);
+      const result = await createAdmission(admissionData);
 
-      console.log("Submitted Data:", admissionData);
-      alert(`Success! Admission created with ID: ${admissionId}`);
+      if (!result.success) {
+        // Show error to user
+        setSubmissionError(result.error);
+        return;
+      }
+
+      setAdmissionId(result.admissionId);
+      
     } catch (error) {
       console.error(error);
       alert("Failed to upload image.");
@@ -89,8 +99,6 @@ export default function ProfileForm() {
 
     <div className="relative min-h-screen overflow-hidden mb-20">
       
-
-      
       <div className="relative z-10 min-h-screen lg:flex">
 
         <div className="lg:hidden flex flex-col items-baseline justify-center px-8 py-12">
@@ -122,10 +130,10 @@ export default function ProfileForm() {
           </div>
 
           {/* Heading */}
-          <h1 className="mt-7 text-5xl font-bold leading-tight xl:text-6xl">
-            Start your
+          <h1 className="flex gap-3 mt-7 text-5xl font-bold leading-tight xl:text-6xl">
+            How to
             <span className="block bg-linear-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
-              journey with us.
+              Apply.
             </span>
           </h1>
 
@@ -207,7 +215,16 @@ export default function ProfileForm() {
         </div>
       </div>
 
+      {admissionId ? (
+        <AdmissionSuccess admissionId={admissionId} />
+      ) : (
+
       <Card className="w-full max-w-lg mx-auto shadow-md dark:bg-gray-800 mb-50 mt-20">
+        {submissionError && (
+          <p className="text-sm text-red-400 text-center">
+            {submissionError}
+          </p>
+        )}
         <CardHeader>
           <CardTitle className="text-xl font-bold">Registration</CardTitle>
           <CardDescription>Provide Your detail and Your ESSLCE Result.</CardDescription>
@@ -254,7 +271,7 @@ export default function ProfileForm() {
                     <p className="text-sm text-muted-foreground">
                       <span className="font-semibold">Click to upload</span> or drag and drop
                     </p>
-                    <p className="text-xs text-muted-foreground/75 mt-1">PNG, JPG, or WEBP (Max 4.5MB)</p>
+                    <p className="text-xs text-muted-foreground/75 mt-1">PNG, JPG, or WEBP (Max 1MB)</p>
                   </div>
                   <input
                     type="file"
@@ -298,6 +315,7 @@ export default function ProfileForm() {
           </form>
         </CardContent>
       </Card>
+      )}
     </div>
     </div>
   );

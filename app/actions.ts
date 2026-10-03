@@ -4,6 +4,7 @@ import { put } from "@vercel/blob";
 import { fileTypeFromBlob } from "file-type";
 import { db } from "@/db";
 import { admissionsTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
 
@@ -51,24 +52,47 @@ export async function uploadToVercelBlob(formData: FormData) {
 
 
 export async function createAdmission(data: {
-    name: string;
-    email: string;
-    age: number;
-    phone: string;
-    imageUrl: string;
-  }) {
-    const [admission] = await db
-      .insert(admissionsTable)
-      .values({
-        name: data.name,
-        email: data.email,
-        age: data.age,
-        phone: data.phone,
-        imageUrl: data.imageUrl,
-      })
-      .returning({
-        admissionId: admissionsTable.admissionId,
-      });
+  name: string;
+  email: string;
+  age: number;
+  phone: string;
+  imageUrl: string;
+}): Promise<
+  | { success: true; admissionId: string }
+  | { success: false; error: string }
+> {
+  const email = data.email.trim().toLowerCase();
 
-    return admission.admissionId;
+  const sameUser = await db.query.admissionsTable.findFirst({
+    where: eq(admissionsTable.email, email),
+  });
+
+  if (sameUser) {
+    return {
+      success: false,
+      error: "This email has already been used for an admission.",
+    };
   }
+
+  const [admission] = await db
+    .insert(admissionsTable)
+    .values({
+      ...data,
+      email,
+    })
+    .returning({
+      admissionId: admissionsTable.admissionId,
+    });
+
+  if (!admission) {
+    return {
+      success: false,
+      error: "Unable to create admission. Please try again.",
+    };
+  }
+
+  return {
+    success: true,
+    admissionId: admission.admissionId,
+  };
+}

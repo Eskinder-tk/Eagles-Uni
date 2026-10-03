@@ -24,7 +24,7 @@ export const admissionsTable = pgTable("admissions", {
 
   // Applicant information
   name: varchar({ length: 255 }).notNull(),
-  email: varchar({ length: 255 }).notNull(),
+  email: varchar({ length: 255 }).notNull().unique(),
   age: integer().notNull(),
   phone: varchar({ length: 30 }).notNull(),
 
