@@ -90,11 +90,11 @@ const Footer = () => {
         
         
       </div>
-      <ScrollReveal direction="up" delay={0.3}>
+      
          <p className="text-center text-gray-500 text-sm py-4">
             @ 2027 Eagles University. All rights reserved.
         </p>
-      </ScrollReveal>
+      
      
     </footer>
   );

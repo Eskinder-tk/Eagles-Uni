@@ -3,29 +3,35 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ScrollReveal } from "./scroll-reveal";
+import Link from "next/link";
 
 const news = [
   {
+    id: 1,
     image: "/news1.jpg",
     title: "New Academic Year Begins",
     text: "The university welcomes students for the new academic year.",
   },
   {
+    id: 2,
     image: "/news2.jpg",
     title: "Admission Applications Open",
     text: "Applications for the upcoming semester are now available.",
   },
   {
+    id: 3,
     image: "/news3.jpg",
     title: "Students Win Competition",
     text: "Our students achieved first place in a national competition.",
   },
   {
+    id: 4,
     image: "/news4.jpg",
     title: "New Campus Facilities",
     text: "The university has opened new facilities for students.",
   },
   {
+    id: 5,
     image: "/news5.jpg",
     title: "University Holds Annual Event",
     text: "Students and staff gathered for the university's annual event.",
@@ -74,7 +80,7 @@ const LatestNews = () => {
   const activeIndex = Math.min(currentIndex, maxIndex);
 
   return (
-    <section className="w-full max-w-6xl mx-auto px-4">
+    <section id="News" className="w-full max-w-6xl mx-auto px-4 scroll-mt-20">
       {/* Heading */}
       <div className="flex items-center justify-between mb-6">
         <ScrollReveal direction="up" delay={0.2}>
@@ -109,7 +115,7 @@ const LatestNews = () => {
           
           {news.map((item, index) => (
             <div
-              key={index}
+              key={item.id}
               className="shrink-0 basis-full sm:basis-1/2 lg:basis-1/3 px-2"
             >
               <ScrollReveal direction="up" delay={0.4 + index * 0.1}>
@@ -127,12 +133,12 @@ const LatestNews = () => {
 
                   <p className="mt-2 text-gray-600 dark:text-gray-400">{item.text}</p>
 
-                  <a
-                    href="#"
+                  <Link
+                    href={`/News/${item.id}`}
                     className="mt-4 inline-block font-medium text-blue-500 hover:text-blue-700"
                   >
                     Read more →
-                  </a>
+                  </Link>
                 </div>
               </article>
               </ScrollReveal>

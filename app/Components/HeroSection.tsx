@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight } from "lucide-react"
 import {ScrollReveal} from "./scroll-reveal"
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -57,7 +58,9 @@ export default function HeroSection() {
         <div className="flex ">
           {/* Primary Solid Button */}
           <ScrollReveal direction="up" delay={0.5}>
-            <Button 
+            <Button
+              render={<Link href="/Admission" />}
+              nativeButton={false}
               className="group bg-[#3b6e99] hover:bg-[#2d567a] text-white px-6 py-5 rounded-md text-base font-medium gap-2 transition-colors"
             >
               Apply Now

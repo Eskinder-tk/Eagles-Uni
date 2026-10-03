@@ -12,7 +12,6 @@ const Home = () => {
         <Stat />
         <LatestNews />
         <FAQ />
-        <Footer />
     </div>
   )
 }
