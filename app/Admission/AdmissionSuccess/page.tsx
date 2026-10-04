@@ -40,6 +40,13 @@ const AdmissionSuccess = ({
         <p className="mt-2 break-all text-xl font-semibold tracking-wider text-cyan-300">
           {admissionId}
         </p>
+        <button
+          type="button"
+          onClick={() => navigator.clipboard.writeText(admissionId)}
+          className="mt-4 rounded-lg border border-cyan-400/20 hover:text-cyan-600 px-4 py-2 text-sm text-cyan-300"
+        >
+          Copy admission number
+        </button>
       </div>
 
       <p className="mt-5 text-sm text-white/40">

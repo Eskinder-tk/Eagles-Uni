@@ -4,7 +4,8 @@ import { put } from "@vercel/blob";
 import { fileTypeFromBlob } from "file-type";
 import { db } from "@/db";
 import { admissionsTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
+
 
 const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
 
@@ -50,6 +51,60 @@ export async function uploadToVercelBlob(formData: FormData) {
   return blob.url;
 }
 
+export async function getAdmissionStatus(
+  email: string,
+  admissionId: string
+) {
+  try {
+    const sanitizedEmail = email.trim().toLowerCase();
+    const sanitizedAdmissionId = admissionId.trim();
+
+    // Check if admissionId is a valid UUID format (if your DB column is type UUID)
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(sanitizedAdmissionId)) {
+      return {
+        success: false,
+        error: "Invalid Admission ID format.",
+      };
+    }
+
+    const admission = await db
+      .select({
+        admissionId: admissionsTable.admissionId,
+        name: admissionsTable.name,
+        status: admissionsTable.status,
+        createdAt: admissionsTable.createdAt,
+      })
+      .from(admissionsTable)
+      .where(
+        and(
+          eq(admissionsTable.email, sanitizedEmail),
+          eq(admissionsTable.admissionId, sanitizedAdmissionId)
+        )
+      )
+      .limit(1);
+
+    if (admission.length === 0) {
+      return {
+        success: false,
+        error: "No admission found with those details.",
+      };
+    }
+
+    return {
+      success: true,
+      admission: admission[0],
+    };
+  } catch (error) {
+    console.error("Error in getAdmissionStatus:", error);
+    return {
+      success: false,
+      error: "Something went wrong on the server. Please try again later.",
+    };
+  }
+}
 
 export async function createAdmission(data: {
   name: string;
@@ -61,7 +116,7 @@ export async function createAdmission(data: {
   | { success: true; admissionId: string }
   | { success: false; error: string }
 > {
-  const email = data.email.trim().toLowerCase();
+  const email = data.email.trim();
 
   const sameUser = await db.query.admissionsTable.findFirst({
     where: eq(admissionsTable.email, email),
