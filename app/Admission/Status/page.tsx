@@ -235,7 +235,7 @@ function AdmissionStatus({
               </CardTitle>
 
               <CardDescription className="mt-2 text-slate-600 dark:text-slate-400">
-                Here is the current status of your application.
+                Please check your email for more information.
               </CardDescription>
             </div>
           </CardHeader>
