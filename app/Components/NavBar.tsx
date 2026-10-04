@@ -7,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmissionOpen, setIsAdmissionOpen] = useState(false);
 
   return (
     <nav className="relative z-50 bg-white dark:bg-gray-800 dark:text-gray-300 text-gray-600 px-6 py-0 rounded-full flex items-center justify-between shadow-md mb-3.5">
@@ -114,13 +115,37 @@ const NavBar = () => {
 
             <hr />
 
-            <Link
-              href="/Admission"
-              className="px-6 py-4 hover:bg-gray-100 hover:text-blue-500"
-              onClick={() => setIsOpen(false)}
+            <button
+              type="button"
+              className="flex justify-between items-center w-full px-6 py-4 hover:bg-gray-100 hover:text-blue-500 text-left font-medium"
+              onClick={() => setIsAdmissionOpen((prev) => !prev)}
             >
-              Admission
-            </Link>
+              <span>Admission</span>
+              {/* Dropdown indicator icon */}
+              <span className={`text-xs transition-transform duration-200 ${isAdmissionOpen ? 'rotate-180' : ''}`}>
+                ▼
+              </span>
+            </button>
+
+            {isAdmissionOpen && (
+              <div className="flex flex-col bg-white  dark:bg-gray-800 dark:text-gray-300 pl-4">
+                <Link
+                  href="/Admission"
+                  className="px-6 py-3 text-sm hover:bg-gray-100 hover:text-blue-500"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Apply for Admission
+                </Link>
+                <Link
+                  href="/Admission/Status"
+                  className="px-6 py-3 text-sm hover:bg-gray-100 hover:text-blue-500"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admission Status
+                </Link>
+              </div>
+            )}
+
 
             <hr />
 
