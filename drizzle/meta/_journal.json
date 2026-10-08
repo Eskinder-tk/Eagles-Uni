@@ -15,6 +15,48 @@
       "when": 1791059852805,
       "tag": "0001_daily_sally_floyd",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791324145959,
+      "tag": "0002_blushing_thing",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791324481650,
+      "tag": "0003_outstanding_slyde",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791445499134,
+      "tag": "0004_chilly_sage",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791447198220,
+      "tag": "0005_moaning_iceman",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791447523508,
+      "tag": "0006_hard_eternals",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791455519254,
+      "tag": "0007_thick_deadpool",
+      "breakpoints": true
     }
   ]
 }

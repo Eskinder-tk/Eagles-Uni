@@ -1,0 +1,2 @@
+CREATE SEQUENCE "public"."instructor_id_sequence" INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 CACHE 1;--> statement-breakpoint
+ALTER TABLE "instructors" ALTER COLUMN "instructor_code" SET DEFAULT 'EUI/' || lpad(nextval('instuctor_id_sequence')::text, 6, '0');

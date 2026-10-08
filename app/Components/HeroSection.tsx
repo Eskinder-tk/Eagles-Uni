@@ -12,6 +12,7 @@ export default function HeroSection() {
         <div className="relative h-87.5 lg:h-full w-full overflow-hidden">
         <video
           autoPlay
+          preload="auto"
           loop
           muted
           playsInline

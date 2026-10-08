@@ -3,8 +3,14 @@
 import { put } from "@vercel/blob";
 import { fileTypeFromBlob } from "file-type";
 import { db } from "@/db";
-import { admissionsTable } from "@/db/schema";
+import { admissionsTable, usersTable, coursesTable, userCoursesTable, instructors, instructorCourses } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import bcrypt from "bcrypt";
+import { createSession } from '@/lib/session';
+
+export async function hashPassword(password: string) {
+  return bcrypt.hash(password, 12);
+}
 
 
 const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
@@ -14,6 +20,64 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ];
+
+export async function Login (id: string, password: string) {
+  if (id.includes("EUI")) {
+    const instructor = await db.query.instructors.findFirst({where: eq(instructors.instructorCode, id)})
+    if (!instructor) {
+      return {
+        success: false,
+        error: "Invalid Id!"
+      }
+    }
+
+    const isValid = await bcrypt.compare(password, instructor.passwordHash)
+
+    if (!isValid) {
+      return {
+        success: false,
+        error: "Incorrect Password!"
+      }
+    }
+
+    return {
+      success: true,
+      instructor: instructor
+    }
+  }
+
+  if (id.includes("EUU")){
+    const student = await db.query.usersTable.findFirst({where: eq(usersTable.userCode, id)})
+
+    if (!student) {
+      return {
+        success: false,
+        error: "Invalid Id!"
+      }
+    }
+
+    const isValid = await bcrypt.compare(password, student.passwordHash)
+
+    if (!isValid) {
+      return {
+        success: false,
+        error: "Incorrect Password!"
+      }
+    }
+    await createSession(String(student.id));
+
+    return {
+      success: true,
+      student: student
+    }
+  }
+
+  return {
+    success: false,
+    error: "Invalid Id!"
+  }
+
+}
 
 export async function uploadToVercelBlob(formData: FormData) {
   const file = formData.get("file");

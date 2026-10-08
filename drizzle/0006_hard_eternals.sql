@@ -1,0 +1,1 @@
+ALTER TABLE "instructors" ALTER COLUMN "instructor_code" SET DEFAULT 'EUI/' || lpad(nextval('instructor_id_sequence')::text, 6, '0');
