@@ -1,22 +1,31 @@
+'use server';
+
 // lib/session.ts
 import { cookies } from 'next/headers';
 import { db } from '@/db';
-import { sessions, usersTable } from '@/db/schema';
+import { sessions, usersTable, instructors } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import crypto from 'crypto';
 
-export async function createSession(userId: string) {
+type SessionAccount =
+  | { role: 'user'; id: number }
+  | { role: 'instructor'; id: number };
+
+export async function createSession(account: SessionAccount) {
   const sessionId = crypto.randomBytes(32).toString('hex');
   
   // Absolute max backup lifetime in DB (e.g., 12 hours)
   const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
 
   // 1. Store in database
-  await db.insert(sessions).values({
+  const sessionValues: typeof sessions.$inferInsert = {
     id: sessionId,
-    userId,
+    userId: account.role === 'user' ? account.id : null,
+    instructorId: account.role === 'instructor' ? account.id : null,
     expiresAt,
-  });
+  };
+
+  await db.insert(sessions).values(sessionValues);
 
   // 2. Set Session Cookie (Omitting 'expires' and 'maxAge' makes it in-memory)
   const cookieStore = await cookies();
@@ -35,23 +44,47 @@ export async function verifySession() {
 
   if (!sessionId) return null;
 
+  // Left join both tables to query either account type in 1 DB request
   const result = await db
-    .select({ user: usersTable, session: sessions })
+    .select({
+      session: sessions,
+      user: usersTable,
+      instructor: instructors,
+    })
     .from(sessions)
-    .innerJoin(usersTable, eq(sessions.userId, usersTable.id))
+    .leftJoin(usersTable, eq(sessions.userId, usersTable.id))
+    .leftJoin(instructors, eq(sessions.instructorId, instructors.id))
     .where(eq(sessions.id, sessionId))
     .limit(1);
 
   if (result.length === 0) return null;
 
-  const { user, session } = result[0];
+  const { session, user, instructor } = result[0];
 
+  // Expiration check
   if (Date.now() > new Date(session.expiresAt).getTime()) {
     await deleteSession();
     return null;
   }
 
-  return { user, session };
+  // Return formatted payload with resolved account and explicit role
+  if (instructor) {
+    return {
+      session,
+      account: instructor,
+      role: 'instructor' as const,
+    };
+  }
+
+  if (user) {
+    return {
+      session,
+      account: user,
+      role: 'user' as const,
+    };
+  }
+
+  return null;
 }
 
 export async function deleteSession() {

@@ -112,9 +112,12 @@ const PortalLayout = () => {
           setApiError(""); // Clear error after 5 seconds
         }, 5000);
       }
-      router.push("/Portal/Dashboard");
-
-
+      if (response.student){
+        router.push('Portal/Dashboard');
+      }
+      if (response.instructor){
+        router.push('Portal/Dashboard');
+      }
     } catch (error) {
       setApiError("Invalid credentials. Please try again.");
     } finally {
@@ -147,7 +150,7 @@ const PortalLayout = () => {
               >
                 {/* Visual Icon Box / Banner */}
                 <div
-                  className={`w-28 sm:w-36 shrink-0 bg-gradient-to-br ${tile.gradient} rounded-lg flex flex-col items-center justify-center text-white p-4 transition-transform group-hover:scale-[1.02]`}
+                  className={`w-28 sm:w-36 shrink-0 bg-linear-to-br ${tile.gradient} rounded-lg flex flex-col items-center justify-center text-white p-4 transition-transform group-hover:scale-[1.02]`}
                 >
                   <Icon className="h-8 w-8 mb-1 opacity-90" />
                 </div>

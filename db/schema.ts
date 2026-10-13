@@ -77,7 +77,10 @@ export const userCoursesTable = pgTable(
   },
   (table) => [
     primaryKey({
-      columns: [table.userId, table.courseId],
+      columns: [table.userId,
+      table.courseId,
+      table.semester,
+      table.academicYear,],
     }),
   ]
 );
@@ -180,8 +183,7 @@ export const instructorCoursesRelations = relations(
 
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
-  userId: uuid('user_id')
-    .notNull()
-    .references(() => usersTable.id, { onDelete: 'cascade' }),
+  userId: integer('user_id').references(() => usersTable.id, { onDelete: 'cascade' }),
+  instructorId: integer('instructor_id').references(() => instructors.id, { onDelete: 'cascade' }),
   expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });

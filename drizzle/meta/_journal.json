@@ -57,6 +57,41 @@
       "when": 1791455519254,
       "tag": "0007_thick_deadpool",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791538201583,
+      "tag": "0008_productive_loki",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791542712981,
+      "tag": "0009_strange_unus",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791543336266,
+      "tag": "0010_secret_hannibal_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791544071495,
+      "tag": "0011_normalize_session_account_ids",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791709662526,
+      "tag": "0012_sticky_skrulls",
+      "breakpoints": true
     }
   ]
 }
