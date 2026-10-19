@@ -16,7 +16,7 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          //poster="/fallback-thumbnail.jpg" /* Displays while video loads */
+          poster="/main_video_fallback.png" /* Displays while video loads */
           className="h-full w-full object-cover"
         >
           <source src="/main_video.mp4" type="video/mp4" />
