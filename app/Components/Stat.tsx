@@ -51,7 +51,7 @@ const Stat = () => {
                 <ScrollReveal direction="up" delay={0.2} className="flex items-start justify-center">
       
                     <DotLottieReact
-                        src="/Growing_graph.json" // or CDN link
+                        src="/Graph Lottie Animation.lottie" // or CDN link
                         loop
                         autoplay
                         className="w-full max-w-95 ml-auto mr-auto mb-14  pb-0 h-auto object-contain"
