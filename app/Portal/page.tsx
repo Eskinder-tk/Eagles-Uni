@@ -179,7 +179,7 @@ const PortalLayout = () => {
             {/* Logo Slot Header */}
             <div className="pt-8 pb-2 flex flex-col items-center justify-center px-6">
               <Image
-                src="/footer_Eagle.png"
+                src="/portal_eagle1.png"
                 alt="Eagles University Logo"
                 width={170}
                 height={50}

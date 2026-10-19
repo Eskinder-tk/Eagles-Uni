@@ -59,6 +59,9 @@ export const coursesTable = pgTable("courses", {
   id: serial("id").primaryKey(),
   courseCode: text("course_code").notNull().unique(),
   name: text("name").notNull(),
+  creditHour: integer("credit_hour").notNull(),
+  year: integer("year").notNull(),
+  semester: integer("semester").notNull()
 });
 
 // User-Courses Join Table
@@ -175,6 +178,7 @@ export const instructorCoursesRelations = relations(
     }),
   })
 );
+
 
 
 

@@ -36,9 +36,9 @@ type StudentProfileOverviewProps = {
 
 export default function StudentProfileOverview({
   student,
-  profileHref = "/Portal/ProfileSettings",
-  coursesHref = "/Portal/MyCourses",
-  transcriptHref = "/Portal/AcademicTranscript",
+  profileHref = "/Portal/Profile",
+  coursesHref = "/Portal/Courses",
+  transcriptHref = "/Portal/Grade",
 }: StudentProfileOverviewProps) {
   const firstName = student.name.trim().split(/\s+/)[0];
 

@@ -34,8 +34,8 @@ export default function PortalNavBar({ user }: { user: User }) {
         <Link href="/Portal/Dashboard" className="hover:text-blue-400 transition-colors">
           Dashboard
         </Link>
-        <Link href="/Portal/Courses" className="hover:text-blue-400 transition-colors">
-          My Courses
+        <Link href="/Portal/Register" className="hover:text-blue-400 transition-colors">
+          Register
         </Link>
         
         {user.role === "instructor" ? (
@@ -99,11 +99,11 @@ export default function PortalNavBar({ user }: { user: User }) {
               Dashboard
             </Link>
             <Link
-              href="/Portal/Courses"
+              href="/Portal/Register"
               className="px-4 py-2.5 rounded-lg hover:bg-slate-700 hover:text-white transition-colors"
               onClick={() => setIsOpen(false)}
             >
-              My Courses
+              Register
             </Link>
             <Link
               href="/Portal/Profile"
