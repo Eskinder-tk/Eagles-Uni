@@ -16,10 +16,10 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          poster="/main_video_fallback.png" /* Displays while video loads */
+          //poster="/main_video_fallback.png" /* Displays while video loads */
           className="h-full w-full object-cover"
         >
-          <source src="/main_video.mp4" type="video/mp4" />
+          <source src="/main_videoo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
